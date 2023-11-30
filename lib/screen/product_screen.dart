@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:product_app/model/product_mode.dart';
 import 'package:product_app/provider/product_provider.dart';
+import 'package:product_app/screen/add_product.dart';
+import 'package:product_app/screen/product_detail_screen.dart';
+import 'package:product_app/screen/update_product.dart';
 import 'package:product_app/service/product_api.dart';
 import 'package:product_app/service/shared_preference_service.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +34,20 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddProduct();
+              },
+            ),
+          );
+          productProvider.loadProducts();
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
         title: const Text('ProductKart'),
         actions: [
@@ -75,7 +92,18 @@ class _ProductScreenState extends State<ProductScreen> {
       itemBuilder: (context, index) {
         ProductModel productModel = productProvider.productList[index];
         return GestureDetector(
-
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProductDetailScreen(
+                    productModel: productModel,
+                  );
+                },
+              ),
+            );
+          },
           child: Card(
             child: Column(
               children: [
@@ -83,7 +111,17 @@ class _ProductScreenState extends State<ProductScreen> {
                   children: [
                     IconButton(
                       onPressed: () async {
-
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UpdateProduct(
+                                productModel: productModel,
+                              );
+                            },
+                          ),
+                        );
+                        productProvider.loadProducts();
                       },
                       icon: const Icon(Icons.edit),
                     ),
@@ -135,7 +173,16 @@ class _ProductScreenState extends State<ProductScreen> {
         ProductModel productModel = productProvider.productList[index];
         return GestureDetector(
           onTap: () {
-
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProductDetailScreen(
+                    productModel: productModel,
+                  );
+                },
+              ),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
@@ -146,7 +193,17 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: [
                       IconButton(
                         onPressed: () async {
-
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return UpdateProduct(
+                                  productModel: productModel,
+                                );
+                              },
+                            ),
+                          );
+                          productProvider.loadProducts();
                         },
                         icon: const Icon(Icons.edit),
                       ),
